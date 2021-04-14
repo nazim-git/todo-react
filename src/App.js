@@ -1,25 +1,93 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react"
+import axios from "axios"
+import { Row, InputGroup, InputGroupText, InputGroupAddon, Input, Col, Card, CardBody, Button, FormGroup, ListGroup, ListGroupItem, Badge, Label } from "reactstrap"
+import Todolist from "./TodoList"
+const serverURL = "https://nazimtodo.herokuapp.com"
+export default class App extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            todos: [],
+            todo: { text: "", completed: false },
+            loading: false
+        }
+    }
+    componentDidMount = _ => {
+        this.getAllTodos()
+    }
+    getAllTodos = async () => {
+        let todos = await axios.get(`${serverURL}/todos`)
+        this.setState({ todos: todos.data, todo: { text: "", completed: false } })
+    }
+    addNewTodo = (todo) => {
+        axios.post(`${serverURL}/addTodo`, todo)
+            .then(() => { alert("todo added"); this.getAllTodos() })
+            .catch(err => alert(err + ""))
+    }
+    deleteTodo = (todo_id) => {
+        this.setState({
+            todos: this.state.todos.filter(todo => {
+                return todo._id !== todo_id
+            })
+        }, () => {
+            axios.delete(`${serverURL}/deleteTodo/${todo_id}`)
+                .then(() => alert("todo deleted"))
+                .catch(err => alert(err + ""))
+        })
+    }
+    updateTodo = (updatedObject, todo_id) => {
+        this.setState({
+            todos: this.state.todos.map(todo => {
+                if (todo._id === todo_id) {
+                    todo = { ...todo, ...updatedObject }
+                }
+                return todo
+            })
+        }, () => {
+            axios.post(`${serverURL}/updateTodo/${todo_id}`, updatedObject)
+                .then(() => { console.log("todo updated") })
+                .catch(err => alert(err + ""))
+        })
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    }
+    render() {
+        return (
+            <React.Fragment>
+                <Row>
+                    <h1 className="ml-auto mr-auto">Todo App</h1>
+                </Row>
+                <Row className="d-flex justify-content-center">
+                    <Card className="w-75">
+                        <CardBody>
+                            <FormGroup>
+                                <InputGroup>
+                                    <InputGroupAddon addonType="prepend">
+                                        <InputGroupText>Text</InputGroupText>
+                                    </InputGroupAddon>
+                                    <Input type="text" value={this.state.todo.text} onChange={(e) => this.setState({
+                                        todo: { ...this.state.todo.text, text: e.target.value }
+                                    })} />
+                                </InputGroup>
+                            </FormGroup>
+                            <InputGroup className="d-flex justify-content-end">
+                                <Button disabled={this.state.loading} color="success" size="md" active onClick={() => this.addNewTodo({ ...this.state.todo })}>Add New Todo</Button>
+                            </InputGroup>
+                        </CardBody>
+                    </Card>
+                </Row>
+                <Todolist
+                    title="Todo"
+                    todos={this.state.todos.filter(todo => !todo.completed)}
+                    deleteTodo={this.deleteTodo}
+                    updateTodo={this.updateTodo}
+                />
+                <Todolist
+                    title="Completed"
+                    todos={this.state.todos.filter(todo => todo.completed)}
+                    updateTodo={this.updateTodo}
+                    deleteTodo={this.deleteTodo}
+                />
+            </React.Fragment>
+        )
+    }
 }
-
-export default App;

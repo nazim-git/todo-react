@@ -1,0 +1,7 @@
+vscode:
+  extensions:
+    - tomi.xajssnippets@1.2.0:3e656a553f002ae4b47cd7a220b79db9
+    - steoates.autoimport@1.5.3:4ebdea614104abbdf0acac0259a622bd
+    - ionutvmi.path-autocomplete@1.17.1:1e2c7f1a85a07c2348f55a2e976b8e7b
+    - christian-kohler.path-intellisense@2.3.0:e1a3410fe4148a6b1c54ee4dc280138b
+    - zignd.html-css-class-completion@1.20.0:b4cff772ac278b01865a4fe830468ee9
