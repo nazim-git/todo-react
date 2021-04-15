@@ -1,18 +1,24 @@
 import React from 'react'
-import { Row, InputGroup, InputGroupText, InputGroupAddon, Input, Col, Card, CardBody, Button, FormGroup, ListGroup, ListGroupItem, Badge, Label } from 'reactstrap'
+import { Row, InputGroup, InputGroupText, InputGroupAddon, Input, Button, FormGroup, ListGroup, ListGroupItem, Badge } from 'reactstrap'
 const Todolist = (props) => {
     return <React.Fragment>
-        <h4 className="d-flex justify-content-center">{props.title}</h4>
+        {props.todos.length > 0 && (
+            <Row className="d-flex justify-content-center">
+                <Badge className="w-75 pt-2 pb-2" color="light">{props.title}
+                    {" "}<Badge color="dark">{props.todos.length}</Badge>
+                </Badge>
+            </Row>
+        )}
         <Row className="d-flex justify-content-center">
             <ListGroup className="w-75">
                 {
                     props.todos.map(({ text, completed, _id }) =>
-                        <ListGroupItem key={`todo-list-${_id}`} className="justify-content-between">
+                        <ListGroupItem key={`todo-list-${_id}`}>
                             <InputGroup>
                                 <InputGroupAddon addonType="prepend">
                                     <InputGroupText>
                                         <FormGroup check>
-                                            <Input type="checkbox" checked={completed} onChange={() => {
+                                            <Input type="checkbox" style={{ transform: "scale(2)", marginTop:-5 }} checked={completed} onChange={() => {
                                                 props.updateTodo({ completed: !completed }, _id)
                                             }} />
                                         </FormGroup>

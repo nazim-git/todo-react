@@ -1,6 +1,6 @@
 import React from "react"
 import axios from "axios"
-import { Row, InputGroup, InputGroupText, InputGroupAddon, Input, Col, Card, CardBody, Button, FormGroup, ListGroup, ListGroupItem, Badge, Label } from "reactstrap"
+import { Row, InputGroup, InputGroupText, InputGroupAddon, Input, Col, Card, CardBody, Button, FormGroup, ListGroup, ListGroupItem, Badge, Label, CardHeader } from "reactstrap"
 import Todolist from "./TodoList"
 const serverURL = "https://nazimtodo.herokuapp.com"
 export default class App extends React.Component {
@@ -53,11 +53,13 @@ export default class App extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <Row>
-                    <h1 className="ml-auto mr-auto">Todo App</h1>
-                </Row>
+                <h1 className="ml-auto mr-auto">Todo App</h1>
+                <hr />
                 <Row className="d-flex justify-content-center">
                     <Card className="w-75">
+                        <CardHeader>
+                            Add New ToDo
+                        </CardHeader>
                         <CardBody>
                             <FormGroup>
                                 <InputGroup>
@@ -69,9 +71,10 @@ export default class App extends React.Component {
                                     })} />
                                 </InputGroup>
                             </FormGroup>
-                            <InputGroup className="d-flex justify-content-end">
-                                <Button disabled={this.state.loading} color="success" size="md" active onClick={() => this.addNewTodo({ ...this.state.todo })}>Add New Todo</Button>
-                            </InputGroup>
+                            {this.state.todo.text &&
+                                <InputGroup className="d-flex justify-content-end">
+                                    <Button disabled={this.state.loading} color="success" size="md" active onClick={() => this.addNewTodo({ ...this.state.todo })}>Add ToDo</Button>
+                                </InputGroup>}
                         </CardBody>
                     </Card>
                 </Row>
