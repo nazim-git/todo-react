@@ -25,7 +25,7 @@ const Todolist = (props) => {
                                     </InputGroupText>
                                 </InputGroupAddon>
                                 <Input type="text" value={text} onChange={(e) => props.updateTodo({ text: e.target.value }, _id)} />
-                                <Button color="danger" size="sm" active onClick={() => props.deleteTodo(_id)}>Remove Todo</Button>
+                                <Button color="danger" size="sm" active onClick={() => props.deleteTodo(_id)}><i class="far fa-trash-alt"></i></Button>
                             </InputGroup>
                         </ListGroupItem>)
                 }
